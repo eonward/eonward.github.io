@@ -8,4 +8,4 @@
 
 ### Philosophy
 
-[Meditations - Aurelius](meditations.txt)
+[Meditations - Aurelius](meditations)
