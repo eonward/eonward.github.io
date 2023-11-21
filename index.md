@@ -8,4 +8,4 @@
 
 ### Philosophy
 
-[Meditations - Aurelius](meditations)
+[Meditations - Aurelius](meditations.html)
