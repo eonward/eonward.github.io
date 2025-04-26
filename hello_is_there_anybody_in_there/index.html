@@ -47,7 +47,7 @@
   <script>
     document.getElementById('redirect-button').addEventListener('click', function() {
       const params = new URLSearchParams(window.location.search);
-      const targetUrl = params.get('1') || 'https://huggingface.co/';
+      const targetUrl = params.get('u') || 'https://huggingface.co/';
       window.location.href = targetUrl;
     });
   </script>
