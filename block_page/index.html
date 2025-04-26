@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zen Garden</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #07070a;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .image-container {
+      width: 100%;
+      height: calc(100vh - 3rem);
+      overflow: hidden;
+    }
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .link-container {
+      margin-top: 1rem;
+    }
+    .link-container a {
+      color: #87ceeb;
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+    .link-container a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="image-container">
+    <img src="/assets/zen_garden.jpg" alt="Zen Garden">
+  </div>
+  <div class="link-container" id="link-container">
+    <!-- Link will be inserted here by JavaScript -->
+  </div>
+
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      let link = params.get('1');
+
+      if (!link) {
+        link = 'file:///C:/Users/Eon/Documents/reads/';
+      }
+
+      const linkContainer = document.getElementById('link-container');
+      const a = document.createElement('a');
+      a.href = link;
+      a.textContent = link;
+      a.target = "_blank";
+      linkContainer.appendChild(a);
+    })();
+  </script>
+</body>
+</html>
