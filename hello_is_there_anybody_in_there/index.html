@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Focus</title>
+  <title>Zen Garden</title>
   <style>
     body, html {
       margin: 0;
@@ -45,10 +45,14 @@
   <button id="redirect-button">&gt;</button>
 
   <script>
-    document.getElementById('redirect-button').addEventListener('click', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+      const button = document.getElementById('redirect-button');
       const params = new URLSearchParams(window.location.search);
       const targetUrl = params.get('u') || 'https://huggingface.co/';
-      window.location.href = targetUrl;
+
+      button.addEventListener('click', function() {
+        window.location.href = targetUrl;
+      });
     });
   </script>
 </body>
