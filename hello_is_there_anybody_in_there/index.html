@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Zen Garden</title>
+  <title>Focus</title>
   <style>
     body, html {
       margin: 0;
@@ -48,11 +48,36 @@
     document.addEventListener('DOMContentLoaded', function() {
       const button = document.getElementById('redirect-button');
       const params = new URLSearchParams(window.location.search);
-      const targetUrl = params.get('u') || 'https://huggingface.co/';
+      let targetUrl = params.get('u') || 'https://huggingface.co/';
 
+      // Basic security: allow only HTTPS URLs
+      if (!/^https:\/\/[^ "]+$/.test(targetUrl)) {
+        console.warn('Invalid or insecure URL provided. Redirecting to default.');
+        targetUrl = 'https://huggingface.co/';
+      }
+
+      // Attach click event
       button.addEventListener('click', function() {
         window.location.href = targetUrl;
       });
+
+      // Fetch the target page title and set it as the tooltip
+      fetch(targetUrl, { mode: 'cors' })
+        .then(response => response.text())
+        .then(htmlText => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(htmlText, 'text/html');
+          const title = doc.querySelector('title');
+          if (title && title.textContent) {
+            button.title = title.textContent.trim();
+          } else {
+            button.title = targetUrl; // fallback
+          }
+        })
+        .catch(error => {
+          console.warn('Unable to fetch page title:', error);
+          button.title = targetUrl; // fallback
+        });
     });
   </script>
 </body>
