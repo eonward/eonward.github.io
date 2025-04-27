@@ -61,23 +61,13 @@
         window.location.href = targetUrl;
       });
 
-      // Fetch the target page title and set it as the tooltip
-      fetch(targetUrl, { mode: 'cors' })
-        .then(response => response.text())
-        .then(htmlText => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(htmlText, 'text/html');
-          const title = doc.querySelector('title');
-          if (title && title.textContent) {
-            button.title = title.textContent.trim();
-          } else {
-            button.title = targetUrl; // fallback
-          }
-        })
-        .catch(error => {
-          console.warn('Unable to fetch page title:', error);
-          button.title = targetUrl; // fallback
-        });
+      // Use the hostname as the tooltip
+      try {
+        const urlObj = new URL(targetUrl);
+        button.title = `Go to ${urlObj.hostname}`;
+      } catch (e) {
+        button.title = targetUrl;
+      }
     });
   </script>
 </body>
