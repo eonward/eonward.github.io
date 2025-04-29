@@ -45,30 +45,48 @@
   <button id="redirect-button">&rsaquo;</button>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const button = document.getElementById('redirect-button');
-      const params = new URLSearchParams(window.location.search);
-      let targetUrl = params.get('u') || 'https://huggingface.co/';
+  document.addEventListener('DOMContentLoaded', function () {
+    const button = document.getElementById('redirect-button');
+    const params = new URLSearchParams(window.location.search);
+    let rawParam = params.get('u');
+    let targetUrl;
 
-      // Basic security: allow only HTTPS URLs
-      if (!/^https:\/\/[^ "]+$/.test(targetUrl)) {
-        console.warn('Invalid or insecure URL provided. Redirecting to default.');
-        targetUrl = 'https://huggingface.co/';
+    try {
+      if (rawParam) {
+        // Try parsing the URL after ensuring it's percent-encoded properly
+        // Use encodeURI to fix any illegal characters (like spaces)
+        const safeUrl = encodeURI(rawParam.trim());
+        const parsedUrl = new URL(safeUrl);
+
+        // Basic security: only allow https
+        if (parsedUrl.protocol === 'https:') {
+          targetUrl = parsedUrl.href;
+        } else {
+          throw new Error('Insecure protocol');
+        }
       }
 
-      // Attach click event
-      button.addEventListener('click', function() {
-        window.location.href = targetUrl;
-      });
+      // Fallback if unsafe or missing
+      if (!targetUrl) throw new Error('No valid URL');
 
-      // Use the hostname as the tooltip
-      try {
-        const urlObj = new URL(targetUrl);
-        button.title = `Go to ${urlObj.hostname}`;
-      } catch (e) {
-        button.title = targetUrl;
-      }
+    } catch (err) {
+      console.warn('Invalid or insecure URL provided. Redirecting to default.');
+      targetUrl = 'https://huggingface.co/';
+    }
+
+    // Attach click event
+    button.addEventListener('click', function () {
+      window.location.href = targetUrl;
     });
+
+    // Use the hostname as the tooltip
+    try {
+      const urlObj = new URL(targetUrl);
+      button.title = `Go to ${urlObj.hostname}`;
+    } catch (e) {
+      button.title = targetUrl;
+    }
+  });
   </script>
 </body>
 </html>
