@@ -87,6 +87,13 @@
       button.title = targetUrl;
     }
   });
+
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+      // The user has returned to the tab
+      location.reload(); // This will reload the page
+    }
+  });
   </script>
 </body>
 </html>
